@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	<bean id="loggingAspect" class="com.nit.aspects.LoggingAspect" />
+	
+	<bean id="performanceAspect" class="com.nit.aspects.PerformanceAspect"/>
+
+	<aop:config>
+		<aop:pointcut
+			expression=" execution(* com.nit.service.UserMgmtService.*(..))"	id="ptc" />
+			
+        
+        <aop:aspect ref="loggingAspect">
+        	<aop:around method="logging" pointcut-ref="ptc" />
+        </aop:aspect>
+        <aop:aspect ref="performanceAspect">
+           <aop:around method="monitor"  pointcut-ref="ptc"/>
+        </aop:aspect>
+        
+    </aop:config>
+
+
+</beans>
